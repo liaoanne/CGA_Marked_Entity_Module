@@ -44,7 +44,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$db_password = $user_data['password'];
 			$db_fname = $user_data['fname'];
 			$db_lname = $user_data['lname'];
-			$db_school_id = $user_data['school_id'];
 			
 			if($db_password==$password){
                 // Password is correct, so start a new session
@@ -56,8 +55,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $_SESSION["username"] = $username;
 				$_SESSION["fname"] = $db_fname;
 				$_SESSION["lname"] = $db_lname;
-				$_SESSION["school_id"] = $db_school_id;
-				
                             
                 // Redirect user to welcome page
                 header("location: ../role_list.php");

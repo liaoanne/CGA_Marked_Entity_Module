@@ -20,27 +20,35 @@ input {border:none; background-color:rgba(0,0,0,0); color:blue; text-decoration:
 	<center><h3>Choose one of the courses to proceed</h3>
 	<font size=4>
 	<div>
+	<table border=1>
 	<?php
-	$data = $link->query("SELECT * FROM courses c JOIN enrolled e ON c.course_id = e.course_id WHERE e.user_id = " . $_SESSION['id']);
+	$data = $link->query("SELECT * FROM courses c JOIN sections s ON c.course_id = s.course_id JOIN enrolled e ON s.section_id = e.section_id WHERE e.user_id = " . $_SESSION['id']);
 	if($data -> num_rows>0){
 		while($row = mysqli_fetch_array($data,MYSQLI_NUM))
 		{
+			// Display the courses available for the logged in user
 			$course_id = $row[0];
-			$dept = $row[1];
-			$code = $row[2];
+			$code = $row[1];
+			$course_name = $row[2];
 			$term = $row[3];
 			$year = $row[4];
-			echo "<form name=course_select method=post action=includes/course_select.php>";
-			echo "<input type=Submit value='" . $dept . " " . $code . " " . $term . " " . $year . "'>";
+			$section_id = $row[8];
+			$section_name = $row[11];
+
+			echo "<tr><td><center><form name=course_select method=post action=includes/course_select.php>";
+			echo "<input type=Submit value='" . $code . " " . $term . " " . $year . "'>";
 			echo "<input name=course_id type=hidden value='" . $course_id . "'>";
-			echo "<input name=dept type=hidden value='" . $dept . "'>";
 			echo "<input name=code type=hidden value='" . $code . "'>";
+			echo "<input name=course_name type=hidden value='" . $course_name . "'>";
 			echo "<input name=term type=hidden value='" . $term . "'>";
-			echo "<input name=year type=hidden value='" . $year . "'></form>";
+			echo "<input name=year type=hidden value='" . $year . "'>";
+			echo "<input name=section_id type=hidden value='" . $section_id . "'>";
+			echo "<input name=section_name type=hidden value='" . $section_name . "'></form></td></tr>";
 			echo "<br>";
 		}
 	}
 	?>
+	</table>
 	</div>
 	<br>
 	<hr>

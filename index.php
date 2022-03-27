@@ -31,7 +31,6 @@ Welcome to <font color=Red>C</font><font color=yellow>r</font><font color=#00ff0
     <td><b>Password:</b></td><td><input type=password name=password maxlength=20 size=21></td>
 </tr>
 
-
 <tr>
    <td colspan=2 align=center>
       <input type=Submit value="Login">

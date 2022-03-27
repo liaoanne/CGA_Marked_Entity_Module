@@ -10,7 +10,7 @@ a {text-decoration: none}
 <head></head>
 
 <body bgcolor=#33cccc>
-<b><font size=4><i><?php echo $_SESSION['dept'] . " " . $_SESSION['code'] . " / " . $_SESSION['term'] . " " . $_SESSION['year']; ?><br>Section NN</i></font></b><hr>
+<b><font size=4><i><?php echo $_SESSION['code'] . " / " . $_SESSION['term'] . " " . $_SESSION['year'] . "<br>Section " . $_SESSION['section_name'];?></i></font></b><hr>
 <b><font size=4>
 
 <ul>
