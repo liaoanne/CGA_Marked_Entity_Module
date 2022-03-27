@@ -13,7 +13,7 @@ a {text-decoration: none}
 
 <table border = "0" width = "100%">
 <tr width = "100%">
-<td width = "5%"align=left><img src="../pics/crsmgr_s.jpg" border=0></td>
+<td width = "5%"align=left><img src="pics/crsmgr_s.jpg" border=0></td>
 <td align=center><font size = 5><b>CrsMgr Group-work Assistant Menu</b></font></td>
 </tr>
 </table>

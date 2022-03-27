@@ -19,7 +19,10 @@ input {border:none;background-color:rgba(0,0,0,0);color:blue;text-decoration:und
 <hr>
 	<center><h3>Choose one of the roles to proceed</h3>
 	<font size=4>
-	<div>
+	<div class='role'>
+	<style type="text/css">
+	.role{margin-top: -70px;}
+	</style>
 	<table border=1>
 	<?php
 	$data = $link->query("SELECT r.role_id, role_name FROM roles r JOIN user_roles ur ON r.role_id = ur.role_id WHERE user_id = " . $_SESSION['id']);
@@ -29,7 +32,7 @@ input {border:none;background-color:rgba(0,0,0,0);color:blue;text-decoration:und
 		{
 			$role_id = $row[0];
 			$role_name = $row[1];
-			echo "<tr><td><center><form name=role_select method=post action=includes/role_select.php><input type=Submit value='" . ucwords($role_name) . "'>
+			echo "<tr><td align='center'><form name=role_select method=post action=includes/role_select.php><input type=Submit value='" . ucwords($role_name) . "'>
 			<input name=role_id type=hidden value='" . $role_id . "'></form></td></tr>";
 			echo "<br>";
 		}

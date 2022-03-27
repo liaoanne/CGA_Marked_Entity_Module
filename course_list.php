@@ -19,9 +19,13 @@ input {border:none; background-color:rgba(0,0,0,0); color:blue; text-decoration:
 <hr>
 	<center><h3>Choose one of the courses to proceed</h3>
 	<font size=4>
-	<div>
+	<div class='course'>
+	<style type="text/css">
+	.course{margin-top: -28px;}
+	</style>
 	<table border=1>
 	<?php
+	// TODO: add different queries based on different roles selected
 	$data = $link->query("SELECT * FROM courses c JOIN sections s ON c.course_id = s.course_id JOIN enrolled e ON s.section_id = e.section_id WHERE e.user_id = " . $_SESSION['id']);
 	if($data -> num_rows>0){
 		while($row = mysqli_fetch_array($data,MYSQLI_NUM))
