@@ -17,8 +17,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $_SESSION['section_name'] = trim($_POST["section_name"]);
 
 		// Redirect user to welcome page
-        header("location: ../welcome.php");
+        header("location: ../index.php");
     }
+}
+else{
+    header("location: ../index.php");
 }
 ?>
 

@@ -68,6 +68,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Close connection
     mysqli_close($link);
 }
+else{
+    header("location: ../login_page.php");
+}
 ?>
 
 <HTML>
@@ -75,6 +78,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <p>
 <?php echo $error; ?>
 </p>
-<a href="../index.php">Back to login</a>
+<a href="../login_page.php">Back to login</a>
 </BODY>
 </HTML>

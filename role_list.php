@@ -1,6 +1,12 @@
 <?php
 session_start();
 include "./includes/config.php";
+
+// Check if the user is not logged in, if not then redirect to login page
+if(!isset($_SESSION["loggedin"]) && !$_SESSION["loggedin"] === true){
+    header("location: login_page.php");
+    exit;
+}
 ?>
 
 <html>

@@ -12,4 +12,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         header("location: ../course_list.php");
     }
 }
+else{
+    header("location: ../index.php");
+}
 ?>

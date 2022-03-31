@@ -31,7 +31,7 @@ document.getElementById("display_time").innerHTML=current_date;
 </script>
 
 <td align = "right">
-<i><b><a href = "welcome.php" target ="contents"><font color=black>Home</b></i></a> |</font>
+<i><b><a href = "index.php" target ="contents"><font color=black>Home</b></i></a> |</font>
 <i><b><a href = "role_list.php" target ="_top"><font color=black>Switch Access Role</b></i></a> |</font>
 <i><b><a href = "course_list.php" target ="_top"><font color=black>Switch Course</b></i></a> |</font>
 <i><b><a href = "includes/logout.php" target ="_top"><font color=black>Logout</b></i></a></font><br>
