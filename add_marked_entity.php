@@ -49,7 +49,7 @@ include "includes/head.php";
 <p><strong>Marked Entity Name:</strong><font color='red'> *</font><br>
 <input type="text" name="marked_entity_name" size=40 maxlength=150 required></p>
 
-<div><strong>Assign To:</strong><font color='red'> *</font><br>
+<div><strong>Assign For:</strong><font color='red'> *</font><br>
   <div class="multiselect">
       <div class="selectBox" onclick="showCheckboxes()">
       <select>
@@ -58,10 +58,10 @@ include "includes/head.php";
       <div class="overSelect"></div>
       </div>
       <div id="checkboxes">
-      <label for="all"><input type="checkbox" name="view[]" value="all"/>Individual</label>
+      <label for="all"><input type="checkbox" name="view[]" value=",all,"/>Individual</label>
       <?php
       // Add group checkboxes to select from
-      $data = $link->query("SELECT group_id,name FROM rtc55314.groups");
+      $data = $link->query("SELECT group_id,name FROM rtc55314.groups WHERE section_id=" . $_SESSION['section_id']);
       if($data -> num_rows>0){
         while($row = mysqli_fetch_array($data,MYSQLI_NUM))
         {

@@ -49,36 +49,41 @@ include "includes/head.php";
 <p><strong>Category Name:</strong><font color='red'> *</font><br>
 <input type="text" name="category_name" size=40 maxlength=150 required>
 
-<p><strong>Viewable To:</strong><font color='red'> *</font><br>
-<div class="multiselect">
-    <div class="selectBox" onclick="showCheckboxes()">
-		<select>
-			<option>Select an option</option>
-		</select>
-		<div class="overSelect"></div>
-    </div>
-    <div id="checkboxes">
-		<label for="all"><input type="checkbox" name="view[]" value="all"/>All</label>
-		<label for="ta"><input type="checkbox" name="view[]" value="ta"/>TAs</label>
-    <?php
-    // Add group checkboxes to select from
-    $data = $link->query("SELECT group_id,name FROM rtc55314.groups");
-    if($data -> num_rows>0){
-      while($row = mysqli_fetch_array($data,MYSQLI_NUM))
-      {
-        // Display the categories available
-        $group_id = $row[0];
-        $group_name = $row[1];
-        echo "<label for='" . $group_id . "'><input type='checkbox' name='view[]' value='" . $group_id . "'/>" . $group_name . "</label>";
+<div><strong>Viewable To:</strong><font color='red'> *</font><br>
+  <div class="multiselect">
+      <div class="selectBox" onclick="showCheckboxes()">
+      <select>
+        <option>Select an option</option>
+      </select>
+      <div class="overSelect"></div>
+      </div>
+      <div id="checkboxes">
+      <?php
+      // Check viewable access
+      $data = $link->query("SELECT viewable_to FROM marked_entities WHERE marked_entity_id=" . $_SESSION['entity_id']);
+      if($data -> num_rows>0){
+        $entity_data = $data->fetch_assoc();
+        $view_string = $entity_data['viewable_to'];
+        $view_string = substr($view_string, 1, -1);
+        //$view_array = explode(',', $view_string);
       }
-    }
-    ?>
+      // Add group checkboxes to select from
+        $data = $link->query("SELECT group_id,name FROM rtc55314.groups WHERE group_id IN ($view_string)");
+        if($data -> num_rows>0){
+          while($row = mysqli_fetch_array($data,MYSQLI_NUM))
+          {
+            // Display the categories available
+            $group_id = $row[0];
+            $group_name = $row[1];
+            echo "<label for='" . $group_id . "'><input type='checkbox' name='view[]' value='" . $group_id . "'/>" . $group_name . "</label>";
+          }
+        }
+      ?>
 
-    </div>
+      </div>
+  </div>
 </div>
 
-<p><strong>Category Description:</strong><font color='red'> *</font><br>
-<textarea name="category_desc" rows=8 cols=40 wrap=virtual required></textarea>
 <p><button type="submit" name="submit">Create Category</button></p>
 </form>
 

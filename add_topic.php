@@ -16,16 +16,41 @@ include "includes/head.php";
 <select name="category" required>
 	<option selected disabled value="">Please choose a category</option>
   <?php
-	$data = $link->query("SELECT category_id,name FROM forum_categories");
-	if($data -> num_rows>0){
-		while($row = mysqli_fetch_array($data,MYSQLI_NUM))
-		{
-			// Display the categories available
-			$cat_id = $row[0];
-      $cat_name = $row[1];
-			echo "<option value='" . $cat_id . "'>" . $cat_name . "</option>";
-		}
-	}
+  // Display categories available to post to for admin, instructor, and TA
+  if($_SESSION['role_id']< 4){
+    $data = $link->query("SELECT category_id, name FROM forum_categories WHERE marked_entity_id=" . $_SESSION['entity_id']);
+    if($data -> num_rows>0){
+      while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
+        // Display the categories available
+        $cat_id = $row[0];
+        $cat_name = $row[1];
+        echo "<option value='" . $cat_id . "'>" . $cat_name . "</option>";
+      }
+    }
+  }
+  // Display categories available to post to for students
+  else{
+    // Get the groups that the student belong to
+    $groups = ['all'];
+    $data = $link->query("SELECT group_id FROM group_users WHERE user_id=" . $_SESSION['id']);
+    if($data -> num_rows>0){
+        while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
+            array_push($groups,(string)$row[0]);
+        }
+    }
+
+    // Display the discussion boards available
+    foreach($groups as $value){
+      $data = $link->query("SELECT * FROM forum_categories WHERE (viewable_to LIKE '%," . $value . ",%') AND marked_entity_id=" . $_SESSION['entity_id']);
+      if($data -> num_rows>0){
+          while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
+              $cat_id = $row[0];
+              $cat_name = $row[2];
+              echo "<option value='" . $cat_id . "'>" . $cat_name . "</option>";
+          }
+      }
+    }
+  }
 	?>
 </select>
 

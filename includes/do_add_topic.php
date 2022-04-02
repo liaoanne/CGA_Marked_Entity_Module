@@ -21,6 +21,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     try{
         if($link->query($sql1) && $link->query($sql2)){
             $link->commit();
+            $_SESSION['message'] = "Topic has been successfully posted.";
             header("location: ../discussion_board.php");
         }
         else{

@@ -12,11 +12,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     {
         $_SESSION['error'] = "Please select viewables.";
         // Redirect user back to previous page
-        header("location: ../add_category.php");
+        header("location: ../add_marked_entity.php");
+        exit;
     }
-    if($_POST["view"][0] == "all"){
-        $view_string = "all";
-        $work_type = "individual";
+    if($_POST["view"][0] == ",all,"){
+        if(count($_POST["view"]) == 1){
+            $view_string = ",all,";
+            $work_type = "individual";
+        }
+        else{
+            $_SESSION['error'] = "Please assign marked entity for Individual or Groups, not both.";
+            // Redirect user back to previous page
+            header("location: ../add_marked_entity.php");
+            exit;
+        }
     }
     else{
         $view_string = ",";
@@ -39,7 +48,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $sql1 = "INSERT INTO marked_entities (marked_entity_id, section_id, name, post_date, due_date, type, work_type, viewable_to, file, description) 
         VALUES ($marked_entity_id, " . $_SESSION['section_id'] . ", '$name', NOW(), date('$due_date'), '$type', '$work_type' , '$view_string', '$file', '$desc');";
     $sql2 = "INSERT INTO forum_categories (marked_entity_id, name, viewable_to) 
-        VALUES ($marked_entity_id, 'Public', 'all');";
+        VALUES ($marked_entity_id, 'Public', ',all,');";
     try{
         $link->query($sql2);
         $success = true;
@@ -49,10 +58,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Redirect user back to previous page
         header("location: ../add_marked_entity.php");
     }
-    if($view_string != 'all'){
+    if($view_string != ',all,'){
         if($success){
             foreach($_POST["view"] as $value){
-                $name_groups = 'Private Chat - Group ' . $value;
+                $data = $link->query("SELECT name FROM rtc55314.groups WHERE group_id=$value");
+                if($data -> num_rows>0){
+                    $group_data = $data->fetch_assoc();
+                    $group_name = $group_data['name'];
+                }
+                $name_groups = "Private Chat - " . $group_name;
                 $sql_groups = "INSERT INTO forum_categories (marked_entity_id, name, viewable_to) 
                     VALUES ($marked_entity_id, '$name_groups', ',$value,');";
                 try{
@@ -74,18 +88,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         try{
             $link->query($sql1);
             $link->commit();
+            $_SESSION['message'] = "Marked entity has been successfully added.";
+            // Redirect user back to previous page
             header("location: ../marked_entities.php");
+            exit;
         }
         catch(Exception $e){
             $_SESSION['error'] = $e;
             // Redirect user back to previous page
             header("location: ../add_marked_entity.php");
+            exit;
         }
     }
 }
 else{
     // Redirect user to welcome page
     header("location: ../index.php");
+    exit;
 }
 
 ?>
