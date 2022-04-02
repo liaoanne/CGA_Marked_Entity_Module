@@ -2,22 +2,17 @@
 include "includes/head.php";
 ?>
 
+<!-- Style for the dropdown checkbox -->
 <style>
-.sidebar{width:20%; float:left;}
-.content{width:78%; margin-top:-8px; padding:1%; float:right;background-color:rgb(250, 240, 230);}
-
 .multiselect {
   width: 200px;
 }
-
 .selectBox {
   position: relative;
 }
-
 .selectBox select {
   width: 100%;
 }
-
 .overSelect {
   position: absolute;
   left: 0;
@@ -25,16 +20,13 @@ include "includes/head.php";
   top: 0;
   bottom: 0;
 }
-
 #checkboxes {
   display: none;
   border: 1px #dadada solid;
 }
-
 #checkboxes label {
   display: block;
 }
-
 #checkboxes label:hover {
   background-color: #1e90ff;
 }
@@ -42,7 +34,11 @@ include "includes/head.php";
 
 <!-- Displays the coursemanager main content -->
 <div class=content>
-<h1>Create a Category</h1>
+
+<button><a href="discussion_board.php">Back</a></button>
+<p></p>
+
+<h1>Create a Discussion Category</h1>
 <font color='red'>* Required field</font>
 <form method=post action="includes/do_add_category.php">
 

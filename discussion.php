@@ -2,15 +2,6 @@
 include "includes/head.php";
 ?>
 
-<style>
-.content table, .content th, .content td{
-    border:1px solid;
-}
-.content th{
-    background-color:pink;
-}
-</style>
-
 <!-- Displays the coursemanager main content -->
 <div class=content>
 
@@ -58,11 +49,13 @@ if($data -> num_rows>0){
         echo "<tr><td>" . $text . "</td></tr>";
         echo "</tbody></table>";
         echo "<br>";
+        // Display delete button for admin or instructor
         if($_SESSION['role_id']<3){
             echo "<form method=post action='includes/delete_reply.php'>";
             echo "<button type='submit' name='delete' value=$reply_id>Delete</button>";
             echo "</form>";
         }
+        // Display delete and edit button for original poster
         else{
             if($user_id == $_SESSION['id']){
                 echo "<form method=post action='includes/delete_reply.php'>";

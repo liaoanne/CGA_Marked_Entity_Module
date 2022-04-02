@@ -40,8 +40,7 @@ input {border:none; background-color:rgba(0,0,0,0); color:blue; text-decoration:
 		$data = $link->query("SELECT * FROM courses c JOIN sections s ON c.course_id = s.course_id JOIN users_sections us ON s.section_id = us.section_id WHERE us.user_id = " . $_SESSION['id'] . " ORDER BY 2,3,4,5,12");
 	}
 	if($data -> num_rows>0){
-		while($row = mysqli_fetch_array($data,MYSQLI_NUM))
-		{
+		while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
 			// Display the courses available for the logged in user
 			$course_id = $row[0];
 			$code = $row[1];

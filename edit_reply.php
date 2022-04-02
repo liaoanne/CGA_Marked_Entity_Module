@@ -9,12 +9,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 else{
     // Redirect user to welcome page
     header("location: ../index.php");
-    exit();
+    exit;
 }
 ?>
 
 <!-- Displays the coursemanager main content -->
 <div class=content>
+
+<button><a href="discussion.php">Back</a></button>
+<p></p>
+
 <h1>Edit Reply</h1>
 <font color='red'>* Required field</font>
 

@@ -4,6 +4,10 @@ include "includes/head.php";
 
 <!-- Displays the coursemanager main content -->
 <div class=content>
+
+<button><a href="discussion_board.php">Back</a></button>
+<p></p>
+
 <h1>Add a Topic</h1>
 <font color='red'>* Required field</font>
 

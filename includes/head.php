@@ -10,8 +10,33 @@ if(!isset($_SESSION["loggedin"]) && !$_SESSION["loggedin"] === true){
 ?>
 
 <style>
-.sidebar{width:20%; float:left;}
-.content{width:78%; margin-top:-8px; padding:1%; float:right;background-color:rgb(250, 240, 230);}
+.sidebar{
+    width:20%;
+    float:left;
+}
+.content{
+    width:78%; 
+    margin-top:-8px; 
+    padding:1%; 
+    float:right;
+    background-color:rgb(250, 240, 230);
+}
+.content table, .content th, .content td{
+    border:1px solid;
+}
+.content th{
+    background-color:pink;
+}
+.button-link{
+   background-color: transparent;
+   border: none;
+   color: blue;
+   text-decoration: underline;
+}
+.button-link:hover{
+   background-color: transparent;
+   text-decoration: none;
+}
 </style>
 
 <html>

@@ -9,6 +9,11 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 }
 ?>
 
+<style>
+div.error{
+    text-align:center;
+}
+</style>
 
 <html>
 <head>
@@ -27,15 +32,25 @@ Welcome to <font color=Red>C</font><font color=yellow>r</font><font color=#00ff0
 </table>
 <br><br>
 
+<div class='error'>
+<?php
+// Print error message from db and unset error
+if (isset($_SESSION['error'])){
+  echo "<font color='red'>".$_SESSION['error']."</font>";
+  unset($_SESSION['error']);
+}
+?>
+</div>
+
 <form name=login method=post action="includes/login.php">
 <table border=0 align=center>
 
 <tr>
-    <td><b>User Name:</b></td><td><input type=text name=username maxlength=20  size=20></td>
+    <td><b>User Name:</b></td><td><input type=text name=username maxlength=20 size=20 required></td>
 </tr>
 
 <tr>
-    <td><b>Password:</b></td><td><input type=password name=password maxlength=20 size=21></td>
+    <td><b>Password:</b></td><td><input type=password name=password maxlength=20 size=21 required></td>
 </tr>
 
 <tr>

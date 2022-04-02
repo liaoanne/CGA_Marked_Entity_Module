@@ -2,17 +2,9 @@
 include "includes/head.php";
 ?>
 
-<style>
-.content table, .content th, .content td{
-    border:1px solid;
-}
-.content th{
-    background-color:pink;
-}
-</style>
-
 <!-- Displays the coursemanager main content -->
 <div class=content>
+
 <h1>Marked Entities</h1>
 <p></p>
 <hr>
@@ -31,8 +23,6 @@ if (isset($_SESSION['message'])){
   echo "<font color='blue'>".$_SESSION['message']."</font><br><br>";
   unset($_SESSION['message']);
 }
-
-// Display discussions available
 
 // Display the marked entities viewable to admin, instructor, and TA
 $hw_type=['asg', 'proj', 'other'];
@@ -58,14 +48,14 @@ if($_SESSION['role_id'] < 4){
                 $post_date = $row[3];
                 $due_date = $row[4];
                 $work_type = ucfirst($row[6]);
-                echo "<tr><td><button class='entity' name='entity_id' value=$entity_id type='submit'>" . $entity_name . "</button></td><td>" . $post_date . "</td><td>" . $due_date . "</td><td>" . $work_type . "</td>";
+                echo "<tr><td><button class='button-link' name='entity_id' value=$entity_id type='submit'>" . $entity_name . "</button></td><td>" . $post_date . "</td><td>" . $due_date . "</td><td>" . $work_type . "</td>";
             }
             echo "</form></tbody></table>";
             echo "<br>";
         }
     }
 }
-// Display marked viewable to students
+// Display marked entities viewable to students
 else{
     // Get the groups that the student belong to
     $groups = ['all'];
@@ -98,7 +88,7 @@ else{
                     $post_date = $row[3];
                     $due_date = $row[4];
                     $work_type = ucfirst($row[6]);
-                    echo "<tr><td><button class='entity' name='entity_id' value=$entity_id>" . $entity_name . "</button></td><td>" . $post_date . "</td><td>" . $due_date . "</td><td>" . $work_type . "</td>";
+                    echo "<tr><td><button class='button-link' name='entity_id' value=$entity_id>" . $entity_name . "</button></td><td>" . $post_date . "</td><td>" . $due_date . "</td><td>" . $work_type . "</td>";
                 }
             }
         }
@@ -107,20 +97,6 @@ else{
     }
 }
 ?>
-
-<style>
-.entity{
-   background-color: transparent;
-   border: none;
-   color: blue;
-   text-decoration: underline;
-}
-
-.entity:hover{
-   background-color: transparent;
-   text-decoration: none;
-}
-</style>
 
 </div>
 

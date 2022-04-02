@@ -2,17 +2,12 @@
 include "includes/head.php";
 ?>
 
-<style>
-.content table, .content th, .content td{
-    border:1px solid;
-}
-.content th{
-    background-color:pink;
-}
-</style>
-
 <!-- Displays the coursemanager main content -->
 <div class=content>
+
+<button><a href="marked_entities.php">Back</a></button>
+<p></p>
+
 <h1>Discussion Boards <?php echo "For " . $_SESSION['entity_name'];?></h1>
 <p></p>
 <hr>
@@ -61,7 +56,7 @@ if($_SESSION['role_id']< 4){
                     $topic_author = $row2[3];
                     $topic_modified = $row2[4];
                     $topic_replies = $row2[5];
-                    echo "<tr><td><button class='topic' name='topic_id' value=$topic_id type='submit'>" . $topic_name . "</button></td>";
+                    echo "<tr><td><button class='button-link' name='topic_id' value=$topic_id type='submit'>" . $topic_name . "</button></td>";
                     echo "<td>" . $topic_date . "</td>";
                     echo "<td>" . $topic_modified . "</td>";
                     echo "<td>" . $topic_author . "</td>";
@@ -107,7 +102,7 @@ else{
                         $topic_author = $row2[3];
                         $topic_modified = $row2[4];
                         $topic_replies = $row2[5];
-                        echo "<tr><td><button class='topic' name='topic_id' value=$topic_id type='submit'>" . $topic_name . "</button></td>";
+                        echo "<tr><td><button class='button-link' name='topic_id' value=$topic_id type='submit'>" . $topic_name . "</button></td>";
                         echo "<td>" . $topic_date . "</td>";
                         echo "<td>" . $topic_modified . "</td>";
                         echo "<td>" . $topic_author . "</td>";
@@ -122,20 +117,6 @@ else{
     }
 }
 ?>
-
-<style>
-.topic{
-   background-color: transparent;
-   border: none;
-   color: blue;
-   text-decoration: underline;
-}
-
-.topic:hover{
-   background-color: transparent;
-   text-decoration: none;
-}
-</style>
 
 </div>
 
