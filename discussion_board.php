@@ -21,6 +21,10 @@ if ($_SESSION['role_id'] < 3){
 ?>
 <a href="add_topic.php">Create a Topic</a>
 <p></p>
+<a href="add_file_to_entity.php">Create a Poll</a>
+<p></p>
+<a href="add_file_to_entity.php">Upload a File</a>
+<p></p>
 <hr>
 <p></p>
 
