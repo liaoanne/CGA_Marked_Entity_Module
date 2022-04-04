@@ -16,13 +16,13 @@ if(!isset($_SERVER['HTTP_REFERER'])){
 <p></p>
 <h1>
 <?php
-    // Get topic name
-    $data = $link->query("SELECT title FROM forum_topics WHERE topic_id=" . $_SESSION['topic_id']);
-    if($data -> num_rows>0){
-        $topic_data = $data->fetch_assoc();
-        $title = $topic_data['title'];
-        echo $title;
-    }
+// Get topic name
+$data = $link->query("SELECT title FROM forum_topics WHERE topic_id=" . $_SESSION['topic_id']);
+if($data -> num_rows>0){
+    $topic_data = $data->fetch_assoc();
+    $title = $topic_data['title'];
+    echo $title;
+}
 ?>
 </h1>
 <p></p>
@@ -30,6 +30,7 @@ if(!isset($_SERVER['HTTP_REFERER'])){
 <p></p>
 
 <?php
+
 // Display error/success message when adding reply
 if (isset($_SESSION['message'])){
   echo "<font color='blue'>".$_SESSION['message']."</font><br><br>";
@@ -43,7 +44,18 @@ if (isset($_SESSION['error'])){
 
 <!-- Display discussion thread -->
 <?php
-$data = $link->query("SELECT fr.reply_id,fr.text,fr.date,u.fname,u.lname,u.user_id FROM forum_replies fr JOIN users u ON fr.reply_by=u.user_id WHERE topic_id=" . $_SESSION['topic_id'] . " ORDER BY date");
+// Print the replies that are still viewable to user - encase they leave a group, replies should not be viewable
+if($_SESSION['group_id'] == 'all'){
+    $data = $link->query("SELECT fr.reply_id,fr.text,fr.date,u.fname,u.lname,u.user_id FROM forum_replies fr 
+    JOIN users u ON fr.reply_by=u.user_id WHERE topic_id=" . $_SESSION['topic_id'] . " ORDER BY date");
+}
+else{
+    $data = $link->query("SELECT fr.reply_id,fr.text,fr.date,u.fname,u.lname,u.user_id FROM forum_replies fr 
+    JOIN users u ON fr.reply_by=u.user_id 
+    WHERE topic_id=" . $_SESSION['topic_id'] . " 
+    AND fr.date<=(select coalesce(left_group_date,date('9999-01-01')) FROM group_users WHERE group_id=" . $_SESSION['group_id'] . " 
+    AND user_id=" . $_SESSION['id'] . ") ORDER BY date");
+}
 if($data -> num_rows>0){
     while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
         $reply_id = $row[0];

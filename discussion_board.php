@@ -122,9 +122,23 @@ else{
                 echo $cat_name;
                 echo "<table><tbody><tr><th>Topic Title</th><th>Date Created</th><th>Latest Post</th><th>Author</th><th>Replies</th></tr>";
                 echo "<form method=post action='includes/topic_select.php'>";
-
-                $data2 = $link->query("SELECT ft.topic_id, ft.title, ft.date created, CONCAT(u.fname,' ',u.lname) author, max(fr.date) last_modified, count(fr.reply_id) num_replies FROM forum_topics ft JOIN forum_replies fr ON ft.topic_id=fr.topic_id JOIN users u ON ft.topic_by=u.user_id WHERE category_id=$cat_id GROUP BY ft.topic_id, ft.title, ft.date, CONCAT(u.fname,' ',u.lname) ORDER BY ft.date;");
-    
+                
+                // Print the topics that are still viewable to user - encase they leave a group, topics should not be viewable
+                if($value == 'all'){
+                    $data2 = $link->query("SELECT ft.topic_id, ft.title, ft.date created, CONCAT(u.fname,' ',u.lname) author, max(fr.date) last_modified, count(fr.reply_id) num_replies 
+                    FROM forum_topics ft 
+                    JOIN forum_replies fr ON ft.topic_id=fr.topic_id 
+                    JOIN users u ON ft.topic_by=u.user_id WHERE category_id=$cat_id 
+                    GROUP BY ft.topic_id, ft.title, ft.date, CONCAT(u.fname,' ',u.lname) ORDER BY ft.date;");
+                }
+                else{
+                    $data2 = $link->query("SELECT ft.topic_id, ft.title, ft.date created, CONCAT(u.fname,' ',u.lname) author, max(fr.date) last_modified, count(fr.reply_id) num_replies 
+                    FROM forum_topics ft 
+                    JOIN forum_replies fr ON ft.topic_id=fr.topic_id 
+                    JOIN users u ON ft.topic_by=u.user_id WHERE category_id=$cat_id 
+                    AND ft.date<=(select coalesce(left_group_date,date('9999-01-01')) FROM group_users WHERE group_id=$value AND user_id=" . $_SESSION['id'] . ") 
+                    GROUP BY ft.topic_id, ft.title, ft.date, CONCAT(u.fname,' ',u.lname) ORDER BY ft.date;");
+                }
                 if($data2 -> num_rows>0){
                     while($row2 = mysqli_fetch_array($data2,MYSQLI_NUM)){
                         $topic_id = $row2[0];
@@ -133,7 +147,7 @@ else{
                         $topic_author = $row2[3];
                         $topic_modified = $row2[4];
                         $topic_replies = $row2[5];
-                        echo "<tr><td><button class='button-link' name='topic_id' value=$topic_id type='submit'>" . $topic_name . "</button></td>";
+                        echo "<tr><td><button class='button-link' name='topic_id' value='$value,$topic_id' type='submit'>" . $topic_name . "</button></td>";
                         echo "<td>" . $topic_date . "</td>";
                         echo "<td>" . $topic_modified . "</td>";
                         echo "<td>" . $topic_author . "</td>";

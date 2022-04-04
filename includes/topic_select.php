@@ -8,7 +8,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         echo "Could not find topic_id.";
     } else{
         // Initialize session information for topic
-        $_SESSION['topic_id'] = trim($_POST["topic_id"]);
+        $_SESSION['group_id'] = trim(substr($_POST["topic_id"], 0, strpos($_POST["topic_id"], ',')));
+        $_SESSION['topic_id'] = trim(substr($_POST["topic_id"], strpos($_POST["topic_id"], ',')+1));
 		// Redirect user to topic discussion page
         header("location: ../discussion.php");
     }
