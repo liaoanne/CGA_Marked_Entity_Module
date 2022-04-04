@@ -18,7 +18,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         exit;
     }
     catch(Exception $e){
-        $_SESSION['error'] = $e . "Sorry, we have run into a database error. Please try again." . $reply_id;
+        $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<p></p>Error: " . $e;
         // Redirect user back to previous page
         header("location: ../edit_reply.php");
         exit;

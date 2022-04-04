@@ -1,5 +1,12 @@
 <?php
 include "includes/head.php";
+
+// Check if person does not have access
+if(!isset($_SERVER['HTTP_REFERER'])){
+  // Redirect user back to previous page
+  header("location: marked_entities.php");
+  exit;
+}
 ?>
 
 <!-- Displays the coursemanager main content -->

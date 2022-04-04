@@ -29,7 +29,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         exit;
     }
     catch(Exception $e){
-        $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.";
+        $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<p></p>Error: " . $e;
         // Redirect user back to previous page
         header("location: ../add_category.php");
         exit;
@@ -38,7 +38,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 else{
     // Redirect user to welcome page
     header("location: ../index.php");
-    exit();
+    exit;
 }
 
 ?>

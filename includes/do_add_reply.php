@@ -14,19 +14,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $_SESSION['message'] = "Reply has been successfully posted.";
         // Redirect user back to previous page
         header("location: ../discussion.php");
-        exit();
+        exit;
     }
     catch(Exception $e){
-        $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.";
+        $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<p></p>Error: " . $e;
         // Redirect user back to previous page
         header("location: ../discussion.php");
-        exit();
+        exit;
     }
 }
 else{
     // Redirect user to welcome page
     header("location: ../index.php");
-    exit();
+    exit;
 }
 
 ?>

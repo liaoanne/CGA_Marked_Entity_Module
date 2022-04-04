@@ -1,5 +1,12 @@
 <?php
 include "includes/head.php";
+
+// Check if person does not have access
+if(!isset($_SERVER['HTTP_REFERER'])){
+    // Redirect user back to previous page
+    header("location: marked_entities.php");
+    exit;
+}
 ?>
 
 <!-- Displays the coursemanager main content -->
@@ -52,7 +59,7 @@ if($data -> num_rows>0){
         // Display delete button for admin or instructor
         if($_SESSION['role_id']<3){
             echo "<form method=post action='includes/delete_reply.php'>";
-            echo "<button type='submit' name='delete' value=$reply_id>Delete</button>";
+            echo "<button type='submit' name='delete' value=$reply_id onclick=\"return confirm('Are you sure you want to delete this reply?')\">Delete</button>";
             echo "</form>";
         }
         // Display delete and edit button for original poster
@@ -61,11 +68,13 @@ if($data -> num_rows>0){
                 echo "<form method=post action='includes/delete_reply.php'>";
                 echo "<button type='submit' name='delete' value=$reply_id>Delete</button>";
                 echo "</form>";
-                echo "<form method=post action='edit_reply.php'>";
-                echo "<input type='hidden' name='text' value='$text'>";
-                echo "<button name='edit' value=$reply_id>Edit</button>";
-                echo "</form>";
             }
+        }
+        if($user_id == $_SESSION['id']){
+            echo "<form method=post action='edit_reply.php'>";
+            echo "<input type='hidden' name='text' value='$text'>";
+            echo "<button name='edit' value=$reply_id>Edit</button>";
+            echo "</form>";
         }
     }
 }

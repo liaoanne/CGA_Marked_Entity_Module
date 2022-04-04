@@ -80,7 +80,7 @@ else{
         echo "<table><tbody><tr><th>Title</th><th>Date Posted</th><th>Due Date</th><th>Work Type</th></tr>";
         echo "<form method=post action='includes/marked_entity_select.php'>";
         foreach($groups as $value){
-            $data = $link->query("SELECT * FROM marked_entities WHERE (viewable_to LIKE '%," . $value . ",%') AND type='$t' AND section_id=" . $_SESSION['section_id']);
+            $data = $link->query("SELECT * FROM marked_entities WHERE (viewable_to LIKE '%," . $value . ",%') AND type='$t' AND section_id=" . $_SESSION['section_id'] . " ORDER BY post_date");
             if($data -> num_rows>0){
                 while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
                     $entity_id = $row[0];

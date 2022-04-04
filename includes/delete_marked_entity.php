@@ -3,23 +3,23 @@ session_start();
 include "./config.php";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $reply_id = $link->real_escape_string(trim($_POST["delete"]));
+    $cat_id = $link->real_escape_string(trim($_POST["delete_cat"]));
 
-    // Delete reply into forum_replies sql table
-    $sql = "DELETE FROM forum_replies WHERE reply_id=$reply_id";
+    // Delete reply into forum_categories sql table
+    $sql = "DELETE FROM marked_entities WHERE marked_entity_id=" . $_SESSION['entity_id'];
 
-    // Check whether insert statements work
+    // Check whether delete statement work
     try{
         $link->query($sql);
-        $_SESSION['message'] = "Reply has been successfully deleted.";
+        $_SESSION['message'] = "Marked entity has been successfully deleted.";
         // Redirect user back to previous page
-        header("location: ../discussion.php");
+        header("location: ../marked_entities.php");
         exit;
     }
     catch(Exception $e){
         $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<br><br>Error: " . $e;
         // Redirect user back to previous page
-        header("location: ../discussion.php");
+        header("location: ../entity_summary.php");
         exit;
     }
 }

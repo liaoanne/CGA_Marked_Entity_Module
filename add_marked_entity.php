@@ -1,36 +1,13 @@
 <?php
 include "includes/head.php";
-?>
 
-<!-- Style for the dropdown checkbox -->
-<style>
-.multiselect {
-  width: 200px;
+// Check if person does not have access
+if ($_SESSION['role_id']>2){
+  // Redirect user back to previous page
+  header("location: index.php");
+  exit;
 }
-.selectBox {
-  position: relative;
-}
-.selectBox select {
-  width: 100%;
-}
-.overSelect {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-#checkboxes {
-  display: none;
-  border: 1px #dadada solid;
-}
-#checkboxes label {
-  display: block;
-}
-#checkboxes label:hover {
-  background-color: #1e90ff;
-}
-</style>
+?>
 
 <!-- Displays the coursemanager main content -->
 <div class=content>
@@ -59,8 +36,7 @@ include "includes/head.php";
       // Add group checkboxes to select from
       $data = $link->query("SELECT group_id,name FROM rtc55314.groups WHERE section_id=" . $_SESSION['section_id']);
       if($data -> num_rows>0){
-        while($row = mysqli_fetch_array($data,MYSQLI_NUM))
-        {
+        while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
           // Display the categories available
           $group_id = $row[0];
           $group_name = $row[1];

@@ -8,9 +8,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $text = trim($_POST["text"]);
 
     // Get the topic_id for the new post
-    $data = $link->query("SELECT COUNT(*) c FROM forum_topics");
+    $data = $link->query("SELECT MAX(topic_id) m FROM forum_topics");
     $temp = $data->fetch_assoc();
-	$topic_id = $temp['c']+1;
+	$topic_id = $temp['m']+1;
 
     // Insert data into forum_topics and forum_replies sql table
     $link->autocommit(false);
@@ -25,13 +25,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             header("location: ../discussion_board.php");
         }
         else{
-             $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.";
+             $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<p></p>Error: " . $e;
              // Redirect user back to previous page
              header("location: ../add_topic.php");
         }
     }
     catch(Exception $e){
-        $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.";
+        $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<p></p>Error: " . $e;
         // Redirect user back to previous page
         header("location: ../add_topic.php");
     }

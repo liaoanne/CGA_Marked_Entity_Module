@@ -1,6 +1,13 @@
 <?php
 include "includes/head.php";
 
+// Check if person does not have access
+if(!isset($_SERVER['HTTP_REFERER'])){
+  // Redirect user back to previous page
+  header("location: marked_entities.php");
+  exit;
+}
+
 // Get reply id
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $reply_id = $link->real_escape_string(trim($_POST["edit"]));
@@ -8,7 +15,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 else{
     // Redirect user to welcome page
-    header("location: ../index.php");
+    header("location: index.php");
     exit;
 }
 ?>

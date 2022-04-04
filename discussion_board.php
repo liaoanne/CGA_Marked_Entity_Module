@@ -1,6 +1,19 @@
 <?php
 include "includes/head.php";
+
+// // Check if person does not have access
+if(!isset($_SERVER['HTTP_REFERER'])){
+    // Redirect user back to previous page
+    header("location: marked_entities.php");
+    exit;
+}
 ?>
+
+<style>
+.form-button{
+    margin-block-end: 0em;
+}
+</style>
 
 <!-- Displays the coursemanager main content -->
 <div class=content>
@@ -8,9 +21,11 @@ include "includes/head.php";
 <button><a href="marked_entities.php">Back</a></button>
 <p></p>
 
-<h1>Discussion Boards <?php echo "For " . $_SESSION['entity_name'];?></h1>
+<h1><?php echo $_SESSION['entity_name'];?></h1>
 <p></p>
 <hr>
+<p></p>
+<a href="entity_summary.php">Summary</a>
 <p></p>
 <?php
 // Display create a custom category if admin or instructor
@@ -34,6 +49,10 @@ if (isset($_SESSION['message'])){
   echo "<font color='blue'>".$_SESSION['message']."</font><br><br>";
   unset($_SESSION['message']);
 }
+if (isset($_SESSION['error'])){
+    echo "<font color='red'>".$_SESSION['error']."</font><br><br>";
+    unset($_SESSION['error']);
+}
 ?>
 
 <!-- Display discussions available -->
@@ -47,10 +66,9 @@ if($_SESSION['role_id']< 4){
 			$cat_name = $row[2];
 
             echo $cat_name;
-			echo "<table><tbody><tr><th>Topic Title</th><th>Date Created</th><th>Latest Post</th><th>Author</th><th>Replies</th></tr>";
-            echo "<form method=post action='includes/topic_select.php'>";
+			echo "<table><tbody><tr><th>Topic Title</th><th>Date Created</th><th>Latest Post</th><th>Author</th><th>Replies</th><th>Options</th></tr>";
 
-            $data2 = $link->query("SELECT ft.topic_id, ft.title, ft.date created, CONCAT(u.fname,' ',u.lname) author, max(fr.date) last_modified, count(fr.reply_id) num_replies FROM forum_topics ft JOIN forum_replies fr ON ft.topic_id=fr.topic_id JOIN users u ON ft.topic_by=u.user_id WHERE category_id=$cat_id GROUP BY ft.topic_id, ft.title, ft.date, CONCAT(u.fname,' ',u.lname);");
+            $data2 = $link->query("SELECT ft.topic_id, ft.title, ft.date created, CONCAT(u.fname,' ',u.lname) author, max(fr.date) last_modified, count(fr.reply_id) num_replies FROM forum_topics ft JOIN forum_replies fr ON ft.topic_id=fr.topic_id JOIN users u ON ft.topic_by=u.user_id WHERE category_id=$cat_id GROUP BY ft.topic_id, ft.title, ft.date, CONCAT(u.fname,' ',u.lname) ORDER BY ft.date;");
 
             if($data2 -> num_rows>0){
                 while($row2 = mysqli_fetch_array($data2,MYSQLI_NUM)){
@@ -60,15 +78,24 @@ if($_SESSION['role_id']< 4){
                     $topic_author = $row2[3];
                     $topic_modified = $row2[4];
                     $topic_replies = $row2[5];
-                    echo "<tr><td><button class='button-link' name='topic_id' value=$topic_id type='submit'>" . $topic_name . "</button></td>";
+                    echo "<tr><td><form class='form-button' method=post action='includes/topic_select.php'><button class='button-link' name='topic_id' value=$topic_id type='submit'>" . $topic_name . "</button></form></td>";
                     echo "<td>" . $topic_date . "</td>";
                     echo "<td>" . $topic_modified . "</td>";
                     echo "<td>" . $topic_author . "</td>";
-                    echo "<td>" . $topic_replies . "</td></tr>";
+                    echo "<td>" . $topic_replies . "</td>";
+                    echo "<td><form class='form-button' method=post action='includes/delete_topic.php'>";
+                    echo "<button type='submit' name='delete_topic' value=$topic_id onclick=\"return confirm('Are you sure you want to delete this topic?')\">Delete Topic</button>";
+                    echo "</form></td></tr>";
                 }
             }
 
-            echo "</form></tbody></table>";
+            echo "</tbody></table>";
+            // Delete category for admin or instructor
+            if($_SESSION['role_id']<3){
+                echo "<form method=post action='includes/delete_category.php'>";
+                echo "<button type='submit' name='delete_cat' value=$cat_id onclick=\"return confirm('Are you sure you want to delete this category?')\">Delete Category</button>";
+                echo "</form>";
+            }
 			echo "<br>";
 		}
 	}
@@ -96,7 +123,7 @@ else{
                 echo "<table><tbody><tr><th>Topic Title</th><th>Date Created</th><th>Latest Post</th><th>Author</th><th>Replies</th></tr>";
                 echo "<form method=post action='includes/topic_select.php'>";
 
-                $data2 = $link->query("SELECT ft.topic_id, ft.title, ft.date created, CONCAT(u.fname,' ',u.lname) author, max(fr.date) last_modified, count(fr.reply_id) num_replies FROM forum_topics ft JOIN forum_replies fr ON ft.topic_id=fr.topic_id JOIN users u ON ft.topic_by=u.user_id WHERE category_id=$cat_id GROUP BY ft.topic_id, ft.title, ft.date, CONCAT(u.fname,' ',u.lname);");
+                $data2 = $link->query("SELECT ft.topic_id, ft.title, ft.date created, CONCAT(u.fname,' ',u.lname) author, max(fr.date) last_modified, count(fr.reply_id) num_replies FROM forum_topics ft JOIN forum_replies fr ON ft.topic_id=fr.topic_id JOIN users u ON ft.topic_by=u.user_id WHERE category_id=$cat_id GROUP BY ft.topic_id, ft.title, ft.date, CONCAT(u.fname,' ',u.lname) ORDER BY ft.date;");
     
                 if($data2 -> num_rows>0){
                     while($row2 = mysqli_fetch_array($data2,MYSQLI_NUM)){

@@ -19,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if($_POST["view"][0] == ",all,"){
         if(count($_POST["view"]) == 1){
             $view_string = ",all,";
-            $work_type = "individual";
+            $work_type = "individual work";
         }
         else{
             $_SESSION['error'] = "Please assign marked entity for Individual or Groups, not both.";
@@ -33,28 +33,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         foreach($_POST["view"] as $value){
             $view_string = $view_string . $value . ",";
         }
-        $work_type = "group";
+        $work_type = "group work";
     }
 
     // TODO: CHECK FOR FILE POST (NOT MANDATORY)
     
     // Get the marked_entity_id for the new marked entity
-    $data = $link->query("SELECT COUNT(*) c FROM marked_entities");
+    $data = $link->query("SELECT MAX(marked_entity_id) m FROM marked_entities");
     $temp = $data->fetch_assoc();
-	$marked_entity_id = $temp['c']+1;
+	$marked_entity_id = $temp['m']+1;
 
     $link->autocommit(false);
     // Insert data into marked entities table and create default categories based on views
     $sql1 = "INSERT INTO marked_entities (marked_entity_id, section_id, name, post_date, due_date, type, work_type, viewable_to, file, description) 
         VALUES ($marked_entity_id, " . $_SESSION['section_id'] . ", '$name', NOW(), date('$due_date'), '$type', '$work_type' , '$view_string', '$file', '$desc');";
     $sql2 = "INSERT INTO forum_categories (marked_entity_id, name, viewable_to) 
-        VALUES ($marked_entity_id, 'Public', ',all,');";
+        VALUES ($marked_entity_id, 'Public Discussion', ',all,');";
     try{
         $link->query($sql2);
         $success = true;
     }
     catch(Exception $e){
-        $_SESSION['error'] = $e;
+        $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<p></p>Error: " . $e;
         // Redirect user back to previous page
         header("location: ../add_marked_entity.php");
     }
@@ -67,14 +67,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $group_data = $data->fetch_assoc();
                     $group_name = $group_data['name'];
                 }
-                $name_groups = "Private Chat - " . $group_name;
+                $name_groups = "Private Discussion - " . $group_name;
                 $sql_groups = "INSERT INTO forum_categories (marked_entity_id, name, viewable_to) 
                     VALUES ($marked_entity_id, '$name_groups', ',$value,');";
                 try{
                     $link->query($sql_groups);
                 }
                 catch(Exception $e){
-                    $_SESSION['error'] = $e;
+                    $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<p></p>Error: " . $e;
                     // Redirect user back to previous page
                     header("location: ../add_marked_entity.php");
                     $success = false;
@@ -96,7 +96,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             exit;
         }
         catch(Exception $e){
-            $_SESSION['error'] = $e;
+            $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<p></p>Error: " . $e;
             // Redirect user back to previous page
             header("location: ../add_marked_entity.php");
             exit;

@@ -1,36 +1,18 @@
 <?php
 include "includes/head.php";
-?>
 
-<!-- Style for the dropdown checkbox -->
-<style>
-.multiselect {
-  width: 200px;
+// Check if person does not have access
+if ($_SESSION['role_id']>2){
+  // Redirect user back to previous page
+  header("location: index.php");
+  exit;
 }
-.selectBox {
-  position: relative;
+if(!isset($_SERVER['HTTP_REFERER'])){
+  // Redirect user back to previous page
+  header("location: marked_entities.php");
+  exit;
 }
-.selectBox select {
-  width: 100%;
-}
-.overSelect {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-#checkboxes {
-  display: none;
-  border: 1px #dadada solid;
-}
-#checkboxes label {
-  display: block;
-}
-#checkboxes label:hover {
-  background-color: #1e90ff;
-}
-</style>
+?>
 
 <!-- Displays the coursemanager main content -->
 <div class=content>

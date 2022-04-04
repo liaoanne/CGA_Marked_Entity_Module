@@ -27,6 +27,7 @@ if(!isset($_SESSION["loggedin"]) && !$_SESSION["loggedin"] === true){
 .content th{
     background-color:pink;
 }
+
 .button-link{
    background-color: transparent;
    border: none;
@@ -36,6 +37,37 @@ if(!isset($_SESSION["loggedin"]) && !$_SESSION["loggedin"] === true){
 .button-link:hover{
    background-color: transparent;
    text-decoration: none;
+}
+button a:hover{
+    background-color: transparent;
+}
+
+.multiselect {
+  width: 200px;
+}
+.selectBox {
+  position: relative;
+}
+.selectBox select {
+  width: 100%;
+}
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+#checkboxes {
+  display: none;
+  border: 1px #dadada solid;
+  background-color: white;
+}
+#checkboxes label {
+  display: block;
+}
+#checkboxes label:hover {
+  background-color: #1e90ff;
 }
 </style>
 
