@@ -41,6 +41,10 @@ if(!isset($_SESSION["loggedin"]) && !$_SESSION["loggedin"] === true){
 button a:hover{
     background-color: transparent;
 }
+.form-button{
+    margin-block-end: 0em;
+    display: inline;
+}
 
 .multiselect {
   width: 200px;

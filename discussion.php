@@ -45,7 +45,7 @@ if (isset($_SESSION['error'])){
 <!-- Display discussion thread -->
 <?php
 // Print the replies that are still viewable to user - encase they leave a group, replies should not be viewable
-if($_SESSION['group_id'] == 'all'){
+if($_SESSION['role_id'] < 4 || $_SESSION['group_id'] == 'all'){
     $data = $link->query("SELECT fr.reply_id,fr.text,fr.date,u.fname,u.lname,u.user_id FROM forum_replies fr 
     JOIN users u ON fr.reply_by=u.user_id WHERE topic_id=" . $_SESSION['topic_id'] . " ORDER BY date");
 }
@@ -64,30 +64,34 @@ if($data -> num_rows>0){
         $reply_by = $row[3] . " " . $row[4];
         $user_id = $row[5];
 
-        echo "<table><tbody><tr><th>" . $reply_by . ", Posted on: " . $date . "</th></tr>";
-        echo "<tr><td>" . $text . "</td></tr>";
-        echo "</tbody></table>";
-        echo "<br>";
+        echo "<table><tbody><tr><th>" . $reply_by . ", Posted on: " . $date . "</th><th>Options</th></tr>";
+        echo "<tr><td><pre>$text</pre></td>";
+        echo "<td>";
+        $f_text = addslashes($text);
+        echo "<input type='button' value='Reply' onclick=\"insertQuote('$f_text')\">";
         // Display delete button for admin or instructor
         if($_SESSION['role_id']<3){
-            echo "<form method=post action='includes/delete_reply.php'>";
+            echo "<form class='form-button' method=post action='includes/delete_reply.php'>";
             echo "<button type='submit' name='delete' value=$reply_id onclick=\"return confirm('Are you sure you want to delete this reply?')\">Delete</button>";
             echo "</form>";
         }
         // Display delete and edit button for original poster
         else{
             if($user_id == $_SESSION['id']){
-                echo "<form method=post action='includes/delete_reply.php'>";
+                echo "<form class='form-button' method=post action='includes/delete_reply.php'>";
                 echo "<button type='submit' name='delete' value=$reply_id>Delete</button>";
                 echo "</form>";
             }
         }
         if($user_id == $_SESSION['id']){
-            echo "<form method=post action='edit_reply.php'>";
+            echo "<form class='form-button' method=post action='edit_reply.php'>";
             echo "<input type='hidden' name='text' value='$text'>";
             echo "<button name='edit' value=$reply_id>Edit</button>";
             echo "</form>";
         }
+        echo "</td></tr>";
+        echo "</tbody></table>";
+        echo "<br>";
     }
 }
 ?>
@@ -97,9 +101,20 @@ if($data -> num_rows>0){
 <!-- Reply textbox -->
 <form method=post action="includes/do_add_reply.php">
 <p><strong>Reply to topic:</strong><br>
-<textarea name="reply" rows=8 cols=40 wrap=virtual></textarea></p>
+<textarea id='reply-box' name='reply' rows=8 cols=40 wrap=virtual></textarea></p>
 <p><button type="submit" name="submit">Reply</button></p>
 </form>
+
+<script type="text/javascript">
+    function insertQuote(text){
+        const textarea = document.getElementById('reply-box');
+        rt = "Reply to: \"";
+        reply_text = rt.concat(text, "\"\n------\n");
+        if (!textarea.value.endsWith(reply_text)) {
+            textarea.value = reply_text;
+        }
+    }
+</script>
 
 </div>
 
