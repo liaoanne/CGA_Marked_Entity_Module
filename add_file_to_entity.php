@@ -11,7 +11,7 @@ include "includes/head.php";
 <h1>Add a File</h1>
 <font color='red'>* Required field</font>
 
-<form method=post action="includes/do_add_file_to_entity.php">
+<form method=post action="includes/do_add_file_to_entity.php" enctype="multipart/form-data">
 
 <p><strong>Topic Category:</strong><font color='red'> *</font><br>
 <select name="category" required>
@@ -55,9 +55,11 @@ include "includes/head.php";
 	?>
 </select>
 
-<p><strong>Upload File:</strong><font color='red'> *</font><br>
+<p><font color='red'> *</font>
+<input type="file" name="fileToUpload" id="fileToUpload" required accept=".pdf,.zip,.PDF,.ZIP"></p>
+<p><small>Accepted formats: zip/pdf</small></p>
 
-<p><button type="submit" name="submit">Upload File</button></p>
+<button type="submit" name="submit">Upload File</button>
 </form>
 
 <?php

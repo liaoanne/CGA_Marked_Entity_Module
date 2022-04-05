@@ -17,7 +17,7 @@ if ($_SESSION['role_id']>2){
   
 <h1>Create a Marked Entity</h1>
 <font color='red'>* Required field</font>
-<form method=post action="includes/do_add_marked_entity.php">
+<form method=post action="includes/do_add_marked_entity.php" enctype="multipart/form-data">
 
 <p><strong>Marked Entity Name:</strong><font color='red'> *</font><br>
 <input type="text" name="marked_entity_name" size=40 maxlength=150 required></p>
@@ -63,7 +63,7 @@ if ($_SESSION['role_id']>2){
 <textarea name="desc" rows=8 cols=40 wrap=virtual></textarea></p>
 
 <p><strong>Add file:</strong><br>
-<!-- TODO: ADD UPLOAD FUNCTION --></p>
+<input type="file" name="fileToUpload" id="fileToUpload"></p>
 
 <p><button type="submit" name="submit">Create Marked Entity</button></p>
 </form>

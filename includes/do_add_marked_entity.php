@@ -1,6 +1,8 @@
 <?php
 session_start();
 include "./config.php";
+$target_dir = "../uploads/";
+$file_id = 0;
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $name = $link->real_escape_string(trim($_POST["marked_entity_name"]));
@@ -8,8 +10,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $due_date = $link->real_escape_string(trim($_POST["due_date"]));
     $type = $link->real_escape_string(trim($_POST["type"]));
     $file = "";
-    if(empty($_POST["view"]))
-    {
+    if(empty($_POST["view"])){
         $_SESSION['error'] = "Please select viewables.";
         // Redirect user back to previous page
         header("location: ../add_marked_entity.php");
@@ -35,9 +36,46 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         $work_type = "group work";
     }
-
-    // TODO: CHECK FOR FILE POST (NOT MANDATORY)
     
+    // Upload file module
+    if (!empty($_FILES) && $_FILES['fileToUpload']['size'] > 0) {
+        $UUID = vsprintf( '%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex(random_bytes(16)), 4) );
+        $target_file = $target_dir . $UUID . basename($_FILES["fileToUpload"]["name"]);
+        $success = true;
+        $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        // Check file size
+        if ($_FILES["fileToUpload"]["size"] > 1000000) {
+            //echo "Sorry, your file is too large.";
+            $success = false;
+        }
+
+        // Allow certain file formats
+        if (!strcasecmp($fileType, "pdf") ||  !strcasecmp($fileType, "zip")) {
+           //echo "Sorry, only pdf or zip files are allowed.";
+           $success = false;
+        }
+
+        // Check if $success is set to false by an error
+        if ($success === true) {
+            if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+              $link->autocommit(false);
+              $sql = "INSERT INTO attachments (file_name, file_location, uploaded_by) VALUES (" . "'" . mysqli_real_escape_string($link,basename( $_FILES['fileToUpload']['name'])) . "', '$target_file', " .$_SESSION['id'] . ");";              //echo "The file " . htmlspecialchars( basename( $_FILES["fileToUpload"]["name"])). " has been uploaded.";
+
+              if ($link->query($sql) === TRUE) {
+                  //echo "New record created successfully";
+                 // $link->commit();
+                  $file_id = $link->insert_id;
+                } else {
+                    $success =  false;
+                 // echo "Error: " . $sql . "<br>" . $link->error;
+                }
+            } else {
+                $success = false;
+             // echo "Sorry, there was an error uploading your file.";
+            }
+        }
+    }
+
     // Get the marked_entity_id for the new marked entity
     $data = $link->query("SELECT MAX(marked_entity_id) m FROM marked_entities");
     $temp = $data->fetch_assoc();
@@ -45,8 +83,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $link->autocommit(false);
     // Insert data into marked entities table and create default categories based on views
-    $sql1 = "INSERT INTO marked_entities (marked_entity_id, section_id, name, post_date, due_date, type, work_type, viewable_to, file, description) 
-        VALUES ($marked_entity_id, " . $_SESSION['section_id'] . ", '$name', NOW(), date('$due_date'), '$type', '$work_type' , '$view_string', '$file', '$desc');";
+    $sql1 = "INSERT INTO marked_entities (marked_entity_id, section_id, name, post_date, due_date, type, work_type, viewable_to, file_id, description) 
+        VALUES ($marked_entity_id, " . $_SESSION['section_id'] . ", '$name', NOW(), date('$due_date'), '$type', '$work_type' , '$view_string', $file_id, '$desc');";
     $sql2 = "INSERT INTO forum_categories (marked_entity_id, name, viewable_to) 
         VALUES ($marked_entity_id, 'Public Discussion', ',all,');";
     try{
@@ -63,7 +101,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         if($success){
             foreach($_POST["view"] as $value){
                 $data = $link->query("SELECT name FROM rtc55314.groups WHERE group_id=$value");
-                if($data -> num_rows>0){
+                if($data->num_rows > 0){
                     $group_data = $data->fetch_assoc();
                     $group_name = $group_data['name'];
                 }
@@ -108,6 +146,4 @@ else{
     header("location: ../index.php");
     exit;
 }
-
 ?>
-
