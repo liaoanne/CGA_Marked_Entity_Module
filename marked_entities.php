@@ -79,11 +79,19 @@ else{
         }
         echo "<table><tbody><tr><th>Title</th><th>Date Posted</th><th>Due Date</th><th>Work Type</th></tr>";
         echo "<form method=post action='includes/marked_entity_select.php'>";
+        $checked = [];
         foreach($groups as $value){
             $data = $link->query("SELECT * FROM marked_entities WHERE (viewable_to LIKE '%," . $value . ",%') AND type='$t' AND section_id=" . $_SESSION['section_id'] . " ORDER BY post_date");
             if($data -> num_rows>0){
                 while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
                     $entity_id = $row[0];
+                    
+                    // Check if the user is in two different groups for same marked entity
+                    if(in_array($entity_id, $checked)){
+                        break;
+                    }
+                    array_push($checked,$entity_id);
+
                     $entity_name = $row[2];
                     $post_date = $row[3];
                     $due_date = $row[4];

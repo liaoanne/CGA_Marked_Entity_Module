@@ -1,11 +1,23 @@
 <?php
 include "includes/head.php";
 
-// // Check if person does not have access
+// Check if person does not have access
 if(!isset($_SERVER['HTTP_REFERER'])){
     // Redirect user back to previous page
     header("location: marked_entities.php");
     exit;
+}
+
+// Check whether due date is passed
+$data = $link->query("SELECT due_date, DATE(SYSDATE()) FROM marked_entities WHERE marked_entity_id=" . $_SESSION['entity_id']);
+if ($data->num_rows>0){
+    $entity_data = $data->fetch_assoc();
+    $due_date = $entity_data['due_date'];
+    $current_date = $entity_data['DATE(SYSDATE())'];
+}
+$readonly = false;
+if($due_date < $current_date){
+    $readonly = true;
 }
 ?>
 
@@ -28,17 +40,19 @@ if(!isset($_SERVER['HTTP_REFERER'])){
 <a href="entity_summary.php">Summary</a>
 <p></p>
 <?php
-// Display create a custom category if admin or instructor
-if ($_SESSION['role_id'] < 3){
-    echo "<a href='add_category.php'>Create a Custom Category</a>";
-    echo "<p></p>";
-}
+if(!$readonly){
+    // Display create a custom category if admin or instructor
+    if ($_SESSION['role_id'] < 3){
+        echo "<a href='add_category.php'>Create a Custom Category</a>";
+        echo "<p></p>";
+    }
 ?>
 <a href="add_topic.php">Create a Topic</a>
 <p></p>
-<a href="add_file_to_entity.php">Create a Poll</a>
+<a href="add_poll.php">Create a Poll (TODO)</a>
 <p></p>
 <a href="add_file_to_entity.php">Upload a File</a>
+<?php }?>
 <p></p>
 <hr>
 <p></p>

@@ -43,7 +43,7 @@ if(!isset($_SERVER['HTTP_REFERER'])){
   else{
     // Get the groups that the student belong to
     $groups = ['all'];
-    $data = $link->query("SELECT group_id FROM group_users WHERE user_id=" . $_SESSION['id']);
+    $data = $link->query("SELECT group_id FROM group_users WHERE user_id=" . $_SESSION['id'] . " AND left_group_date is null");
     if($data -> num_rows>0){
         while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
             array_push($groups,(string)$row[0]);

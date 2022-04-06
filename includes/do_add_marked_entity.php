@@ -37,26 +37,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $work_type = "group work";
     }
     
+    $file_success = true;
     // Upload file module
     if (!empty($_FILES) && $_FILES['fileToUpload']['size'] > 0) {
         $UUID = vsprintf( '%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex(random_bytes(16)), 4) );
         $target_file = $target_dir . $UUID . basename($_FILES["fileToUpload"]["name"]);
-        $success = true;
         $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         // Check file size
         if ($_FILES["fileToUpload"]["size"] > 1000000) {
             //echo "Sorry, your file is too large.";
-            $success = false;
+            $file_success = false;
         }
 
         // Allow certain file formats
         if (!strcasecmp($fileType, "pdf") ||  !strcasecmp($fileType, "zip")) {
            //echo "Sorry, only pdf or zip files are allowed.";
-           $success = false;
+           $file_success = false;
         }
 
         // Check if $success is set to false by an error
-        if ($success === true) {
+        if ($file_success === true) {
             if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
               $link->autocommit(false);
               $sql = "INSERT INTO attachments (file_name, file_location, uploaded_by) VALUES (" . "'" . mysqli_real_escape_string($link,basename( $_FILES['fileToUpload']['name'])) . "', '$target_file', " .$_SESSION['id'] . ");";              //echo "The file " . htmlspecialchars( basename( $_FILES["fileToUpload"]["name"])). " has been uploaded.";
@@ -66,33 +66,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                  // $link->commit();
                   $file_id = $link->insert_id;
                 } else {
-                    $success =  false;
+                    $file_success =  false;
                  // echo "Error: " . $sql . "<br>" . $link->error;
                 }
             } else {
-                $success = false;
+                $file_success = false;
              // echo "Sorry, there was an error uploading your file.";
             }
         }
     }
 
-    // Get the marked_entity_id for the new marked entity
-    $data = $link->query("SELECT MAX(marked_entity_id) m FROM marked_entities");
-    $temp = $data->fetch_assoc();
-	$marked_entity_id = $temp['m']+1;
-
     $link->autocommit(false);
     // Insert data into marked entities table and create default categories based on views
-    $sql1 = "INSERT INTO marked_entities (marked_entity_id, section_id, name, post_date, due_date, type, work_type, viewable_to, file_id, description) 
-        VALUES ($marked_entity_id, " . $_SESSION['section_id'] . ", '$name', NOW(), date('$due_date'), '$type', '$work_type' , '$view_string', $file_id, '$desc');";
-    $sql2 = "INSERT INTO forum_categories (marked_entity_id, name, viewable_to) 
-        VALUES ($marked_entity_id, 'Public Discussion', ',all,');";
+    $link->query("SET FOREIGN_KEY_CHECKS=0");
+    $sql1 = "INSERT INTO marked_entities (section_id, name, post_date, due_date, type, work_type, viewable_to, file_id, description) 
+        VALUES (" . $_SESSION['section_id'] . ", '$name', NOW(), date('$due_date'), '$type', '$work_type' , '$view_string', $file_id, '$desc');";
+
     try{
-        $link->query($sql2);
+        $link->query($sql1);
         $success = true;
+        $marked_entity_id = $link->insert_id;
     }
     catch(Exception $e){
         $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<p></p>Error: " . $e;
+        $link->rollback();
         // Redirect user back to previous page
         header("location: ../add_marked_entity.php");
     }
@@ -112,7 +109,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $link->query($sql_groups);
                 }
                 catch(Exception $e){
+                    $link->query("SET FOREIGN_KEY_CHECKS=1");
                     $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<p></p>Error: " . $e;
+                    $link->rollback();
                     // Redirect user back to previous page
                     header("location: ../add_marked_entity.php");
                     $success = false;
@@ -122,19 +121,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
 
+    $sql2 = "INSERT INTO forum_categories (marked_entity_id, name, viewable_to) 
+    VALUES ($marked_entity_id, 'Public Discussion', ',all,');";
+
     // Check if all sql data were successfully inserted
-    if($success){
+    if($success && $file_success){
         // Check whether both insert statements work
         try{
-            $link->query($sql1);
+            $link->query($sql2);
             $link->commit();
+            $link->query("SET FOREIGN_KEY_CHECKS=1");
             $_SESSION['message'] = "Marked entity has been successfully added.";
             // Redirect user back to previous page
             header("location: ../marked_entities.php");
             exit;
         }
         catch(Exception $e){
+            $link->query("SET FOREIGN_KEY_CHECKS=1");
             $_SESSION['error'] = "Sorry, we have run into a database error. Please try again.<p></p>Error: " . $e;
+            $link->rollback();
             // Redirect user back to previous page
             header("location: ../add_marked_entity.php");
             exit;
