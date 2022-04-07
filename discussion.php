@@ -30,10 +30,12 @@ if ($data->num_rows>0){
     $entity_data = $data->fetch_assoc();
     $due_date = $entity_data['due_date'];
     $current_date = $entity_data['DATE(SYSDATE())'];
-    $data = $link->query("SELECT left_group_date FROM group_users WHERE group_id=" . $_SESSION['group_id']);
-    if ($data->num_rows>0){
-        $group_data = $data->fetch_assoc();
-        $left_date = $group_data['left_group_date'];
+    if($_SESSION['group_id'] != '0' && $_SESSION['group_id'] != 'all'){
+        $data = $link->query("SELECT left_group_date FROM group_users WHERE group_id=" . $_SESSION['group_id']);
+        if ($data->num_rows>0){
+            $group_data = $data->fetch_assoc();
+            $left_date = $group_data['left_group_date'];
+        }
     }
 }
 $readonly = false;
@@ -84,7 +86,7 @@ if($data -> num_rows>0){
         echo "<table><tbody><tr><th>" . $reply_by . ", Posted on: " . $date . "</th><th>Options</th></tr>";
         echo "<tr><td><pre>$text</pre></td>";
         echo "<td>";
-        $f_text = addslashes($text);
+        $f_text = $link->real_escape_string($text);
         // Display reply button for everyone
         if(!$readonly){
             echo "<input type='button' value='Reply' onclick=\"insertQuote('$f_text')\">";

@@ -38,19 +38,22 @@ if($due_date < $current_date){
 <hr>
 <p></p>
 <a href="entity_summary.php">Summary</a>
-<p></p>
 <?php
+if ($_SESSION['role_id'] < 3){
+    echo "| <a href='entity_log.php'>Audit Log</a>";
+}
+echo "<p></p>";
 if(!$readonly){
-    // Display create a custom category if admin or instructor
     if ($_SESSION['role_id'] < 3){
+    // Display create a custom category if admin or instructor
         echo "<a href='add_category.php'>Create a Custom Category</a>";
-        echo "<p></p>";
+        echo " | ";
     }
 ?>
 <a href="add_topic.php">Create a Topic</a>
-<p></p>
+ | 
 <a href="add_poll.php">Create a Poll (TODO)</a>
-<p></p>
+ | 
 <a href="add_file_to_entity.php">Upload a File</a>
 <?php }?>
 <p></p>

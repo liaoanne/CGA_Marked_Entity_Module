@@ -93,7 +93,7 @@ if($data -> num_rows>0){
 <textarea name="desc" rows=8 cols=40 wrap=virtual><?php echo $desc?></textarea></p>
 
 <p><strong>Add file (replaces if already an existing file):</strong><br>
-<!-- TODO: ADD UPLOAD FUNCTION --></p>
+<input type="file" name="fileToUpload" id="fileToUpload" accept=".pdf,.zip,.PDF,.ZIP"></p>
 
 <p><button type="submit" name="submit">Edit Marked Entity</button></p>
 </form>

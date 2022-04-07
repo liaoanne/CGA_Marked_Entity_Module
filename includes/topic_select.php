@@ -15,6 +15,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         exit;
     }
     else{
+        $_SESSION['group_id'] = '0';
         $_SESSION['topic_id'] = $link->real_escape_string(trim($_POST["topic_id"]));
         // Redirect user to topic discussion page
         header("location: ../discussion.php");

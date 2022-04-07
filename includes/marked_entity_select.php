@@ -23,6 +23,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 }
 else{
-    header("location: ../marked_entity.php");
+    header("location: ../marked_entities.php");
 }
 ?>

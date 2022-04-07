@@ -1,5 +1,10 @@
 <?php
 include "includes/head.php";
+if(!isset($_SERVER['HTTP_REFERER'])){
+  // Redirect user back to previous page
+  header("location: marked_entities.php");
+  exit;
+}
 ?>
 
 <!-- Displays the coursemanager main content -->

@@ -63,7 +63,7 @@ if ($_SESSION['role_id']>2){
 <textarea name="desc" rows=8 cols=40 wrap=virtual></textarea></p>
 
 <p><strong>Add file:</strong><br>
-<input type="file" name="fileToUpload" id="fileToUpload"></p>
+<input type="file" name="fileToUpload" id="fileToUpload" accept=".pdf,.zip,.PDF,.ZIP"></p>
 
 <p><button type="submit" name="submit">Create Marked Entity</button></p>
 </form>
