@@ -28,6 +28,7 @@ if($_SESSION['role_id'] == 1){
 // Display sidebar for Instructor
 elseif($_SESSION['role_id'] == 2){
 	echo "You are an instructor.<p>";
+	echo "<li><a href='post_notices.php'><b><font color=black>Post Notices</b></a></li>";
 	echo "<li><a href='manage_students.php'><b><font color=black>Manage Students</b></a></li>";
 	echo "<li><a href='manage_ta.php'><b><font color=black>Manage Teaching Assistants</b></a></li>";
 	echo "<li><a href='manage_groups.php'><b><font color=black>Manage Groups</b></a></li>";
