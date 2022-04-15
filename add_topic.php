@@ -50,7 +50,7 @@ if(!isset($_SERVER['HTTP_REFERER'])){
         }
     }
 
-    // Display the discussion boards available
+    // Display the categories available
     foreach($groups as $value){
       $data = $link->query("SELECT * FROM forum_categories WHERE (viewable_to LIKE '%," . $value . ",%') AND marked_entity_id=" . $_SESSION['entity_id']);
       if($data -> num_rows>0){

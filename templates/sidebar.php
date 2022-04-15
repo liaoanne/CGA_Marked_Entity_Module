@@ -23,8 +23,8 @@ if($_SESSION['role_id'] == 1){
 	echo "<li><a href='manage_users.php'><b><font color=black>Manage Users</b></a></li>";
 	echo "<li><a href='manage_courses.php'><b><font color=black>Manage Courses</b></a></li>";
 	echo "<li><a href='post_notices.php'><b><font color=black>Post Notices</b></a></li>";
+	echo "<li><a href='meetings.php'><b><font color=black>Meetings</b></a></li>";
 }
-
 // Display sidebar for Instructor
 elseif($_SESSION['role_id'] == 2){
 	echo "You are an instructor.<p>";
@@ -33,18 +33,19 @@ elseif($_SESSION['role_id'] == 2){
 	echo "<li><a href='manage_ta.php'><b><font color=black>Manage Teaching Assistants</b></a></li>";
 	echo "<li><a href='manage_groups.php'><b><font color=black>Manage Groups</b></a></li>";
 	echo "<li><a href='marked_entities.php'><b><font color=black>Marked Entities</b></a></li>";
+	echo "<li><a href='meetings.php'><b><font color=black>Meetings</b></a></li>";
 }
-
 // Display sidebar for Teaching Assistant
 elseif($_SESSION['role_id'] == 3){
 	echo "You are a TA.<p>";
 	echo "<li><a href='marked_entities.php'><b><font color=black>Marked Entities</b></a></li>";
+	echo "<li><a href='meetings.php'><b><font color=black>Meetings</b></a></li>";
 }
-
 // Display sidebar for Student
 elseif($_SESSION['role_id'] == 4){
 	echo "You are a student.<p>";
 	echo "<li><a href='marked_entities.php'><b><font color=black>Marked Entities</b></a></li>";
+	echo "<li><a href='meetings.php'><b><font color=black>Meetings</b></a></li>";
 }
 ?>
 

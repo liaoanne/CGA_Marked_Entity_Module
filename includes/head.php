@@ -73,6 +73,9 @@ button a:hover{
 #checkboxes label:hover {
   background-color: #1e90ff;
 }
+pre{
+  font-family: Times New Roman;
+}
 </style>
 
 <html>

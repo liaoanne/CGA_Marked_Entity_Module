@@ -5,7 +5,7 @@ include "./config.php";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $reply_id = $link->real_escape_string(trim($_POST["delete"]));
 
-    // Delete reply in forum_replies sql table
+    // Delete notice in notices sql table
     $sql = "DELETE FROM forum_replies WHERE reply_id=$reply_id";
 
     // Check whether delete statement works

@@ -18,17 +18,18 @@ if(!isset($_SERVER['HTTP_REFERER'])){
 
 <?php
 $data = $link->query("SELECT * FROM marked_entities_log WHERE marked_entity_id=" . $_SESSION['entity_id']);
-        if($data -> num_rows>0){
-            echo "<table><tbody><tr><th>Time of Change</th><th>User ID</th><th>Name</th><th>Query</th></tr>";
-            while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
-                $user_id = $row[2];
-                $fname = $row[3];
-                $lname = $row[4];
-                $query = $row[5];
-                $log_time = $row[6];
-                $name = $fname . " " . $lname;
-                echo "<tr><td>" . $log_time . "</td><td>" . $user_id . "</td><td>" . $name . "</td><td>" . $query . "</td>";
-            }
-            echo "</form></tbody></table>";
-            echo "<br>";
-        }
+if($data -> num_rows>0){
+    echo "<table><tbody><tr><th>Time of Change</th><th>User ID</th><th>Name</th><th>Query</th></tr>";
+    while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
+        $user_id = $row[2];
+        $fname = $row[3];
+        $lname = $row[4];
+        $query = $row[5];
+        $log_time = $row[6];
+        $name = $fname . " " . $lname;
+        echo "<tr><td>" . $log_time . "</td><td>" . $user_id . "</td><td>" . $name . "</td><td>" . $query . "</td>";
+    }
+    echo "</form></tbody></table>";
+    echo "<br>";
+}
+?>

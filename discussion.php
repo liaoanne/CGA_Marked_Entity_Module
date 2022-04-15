@@ -102,7 +102,7 @@ if($data -> num_rows>0){
             if(!$readonly){
                 if($user_id == $_SESSION['id']){
                     echo "<form class='form-button' method=post action='includes/delete_reply.php'>";
-                    echo "<button type='submit' name='delete' value=$reply_id>Delete</button>";
+                    echo "<button type='submit' name='delete' value=$reply_id onclick=\"return confirm('Are you sure you want to delete this reply?')\">Delete</button>";
                     echo "</form>";
                 }
             }
