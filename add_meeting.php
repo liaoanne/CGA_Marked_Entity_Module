@@ -5,7 +5,7 @@ include "includes/head.php";
 <!-- Displays the coursemanager main content -->
 <div class=content>
 
-<button><a href="index.php">Back</a></button>
+<button><a href="meetings.php">Back</a></button>
 <p></p>
 
 <h1>Create a Meeting</h1>

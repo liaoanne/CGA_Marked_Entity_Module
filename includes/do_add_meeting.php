@@ -16,7 +16,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check whether insert statement works
     try{
         $link->query($sql);
-        $_SESSION['message'] = "Notice has been successfully posted.";
+        $_SESSION['message'] = "Meeting has been successfully created.";
         // Redirect user back to previous page
         header("location: ../meetings.php");
         exit;

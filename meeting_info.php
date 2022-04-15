@@ -29,6 +29,16 @@ if($data -> num_rows>0){
 <p></p>
 <hr>
 <p></p>
+<form class='form-button' method=post action='edit_meeting.php'>
+<button class='button-link2' type='submit' name='edit' value='<?php echo $date; ?>'>Change Date/Time</button>
+</form>
+<p></p>
+<form class='form-button' method=post action='includes/delete_meeting.php'>
+<button class='button-link2' type='submit' name='delete' value=<?php echo $_SESSION['meeting_id']; ?> onclick="return confirm('Are you sure you want to cancel this meeting?')">Cancel Meeting</button>
+</form>
+<p></p>
+<hr>
+<p></p>
 <?php
 if (isset($_SESSION['message'])){
     echo "<font color='blue'>".$_SESSION['message']."</font><br><br>";

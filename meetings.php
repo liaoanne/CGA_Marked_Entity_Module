@@ -4,7 +4,7 @@ require "templates/Calendar.php";
 ?>
 
 <style>
-th,td{
+.card th, .card td{
     width:14%;
 }
 [title="today"]{
@@ -15,6 +15,9 @@ th,td{
     border: none;
     color: blue;
     text-decoration: underline;
+}
+div.months{
+    display:none;
 }
 </style>
 
@@ -30,20 +33,22 @@ th,td{
 <hr>
 <p></p>
 
+<?php
+// Display success message when adding meeting
+if (isset($_SESSION['message'])){
+  echo "<font color='blue'>".$_SESSION['message']."</font><br><br>";
+  unset($_SESSION['message']);
+}
+?>
+
 <div class="card">
-  <div class="triangle-left">Previous Year
-  </div>
-  <div class="triangle-right">Next Year
-  </div>
-  <div class="months">
-  </div>
-  <hr class="month-line" />
+  <div class="months"></div>
   <table class="calendar-table" id="calendar" style="width:70%;height:50%">
     <thead>
       <tr>
-        <td align="middle"><--</td>
-        <td colspan="5" align="middle">April <span class="big-year" id="yearNum"></span></td>
-        <td align="middle">--></td>
+        <td align="middle"><div class="month-left"><--</div></td>
+        <td colspan="5" align="middle"><span class="monthTitle" id="monthTitle"></span><span class="big-year" id="yearNum"></span></td>
+        <td align="middle"><div class="month-right">--></div></td>
       </tr>
       <tr>
         <th class="days-of-week">Sun</th>
@@ -130,6 +135,7 @@ function renderCalendar(month, year) {
     let calendarTable = document.getElementById("calendar-body");
     calendarTable.innerHTML = "";
     yearNum.innerHTML = `${year}`;
+    monthTitle.innerHTML = `${allMonths[currentMonth].concat(" ")}`;
 
     let date = 1;
     for (let i = 0; i < 6; i++) {
@@ -219,8 +225,44 @@ function previousYear() {
     })
 }
 
+function previousMonth() {
+    document.addEventListener('click', function(e){
+        if(e.target.className === 'month-left'){
+            e.preventDefault()
+            currentYear = currentYear;
+            if(currentMonth == 0){
+                currentMonth = 11;
+                currentYear = currentYear - 1;
+            }
+            else{
+                currentMonth = currentMonth - 1;
+            }
+            renderCalendar(currentMonth, currentYear);
+        }
+    })
+}
+
+function nextMonth() {
+    document.addEventListener('click', function(e){
+        if(e.target.className === 'month-right'){
+            e.preventDefault()
+            currentYear = currentYear;
+            if(currentMonth == 11){
+                currentMonth = 0;
+                currentYear = currentYear + 1;
+            }
+            else{
+                currentMonth = currentMonth + 1;
+            }
+            renderCalendar(currentMonth, currentYear);
+        }
+    })
+}
+
 renderMonths()
 renderCalendar(currentMonth, currentYear);
 nextYear()
 previousYear()
+previousMonth()
+nextMonth()
 </script>

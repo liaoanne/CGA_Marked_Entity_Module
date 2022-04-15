@@ -10,7 +10,7 @@ include "includes/head.php";
 <hr>
 
 <?php
-// Display success message when adding marked entity
+// Display success message when adding notice
 if (isset($_SESSION['message'])){
   echo "<font color='blue'>".$_SESSION['message']."</font>";
   unset($_SESSION['message']);

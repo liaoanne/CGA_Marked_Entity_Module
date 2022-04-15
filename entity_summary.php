@@ -9,21 +9,6 @@ if(!isset($_SERVER['HTTP_REFERER'])){
 }
 ?>
 
-<style>
-.button-link2{
-    color: #333366;
-    border: none;
-    background-color: transparent;
-    font-weight: bold;
-    font-family: Times New Roman;
-    font-size: 17px;
-    padding-left: 0;
-}
-.button-link2:hover{
-    background-color: #CCFFCC;
-}
-</style>
-
 <!-- Displays the coursemanager main content -->
 <div class=content>
 

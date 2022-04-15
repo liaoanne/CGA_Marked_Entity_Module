@@ -38,6 +38,18 @@ if(!isset($_SESSION["loggedin"]) && !$_SESSION["loggedin"] === true){
    background-color: transparent;
    text-decoration: none;
 }
+.button-link2{
+    color: #333366;
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    font-family: Times New Roman;
+    font-size: 18px;
+    padding-left: 0;
+}
+.button-link2:hover{
+    background-color: #CCFFCC;
+}
 button a:hover{
     background-color: transparent;
 }
