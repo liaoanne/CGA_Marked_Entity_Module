@@ -6,11 +6,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $meeting_id = $_SESSION['meeting_id'];
     $date = $link->real_escape_string(trim($_POST["meeting_date"]));
     $time = $link->real_escape_string(trim($_POST["meeting_time"]));
+    $end_time = $link->real_escape_string(trim($_POST["meeting_end_time"]));
     $datetime = $date . " " . $time;
     echo $datetime;
 
     // Update meeting into meetings sql table
-    $sql = "UPDATE meetings SET date='$datetime' WHERE meeting_id=$meeting_id";
+    $sql = "UPDATE meetings SET date='$datetime', end_time='$end_time' WHERE meeting_id=$meeting_id";
 
     // Check whether update statement worked
     try{

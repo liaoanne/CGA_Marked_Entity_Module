@@ -48,7 +48,7 @@ if(strpos($_SERVER['REQUEST_URI'],'inbox.php') != false || strpos($_SERVER['REQU
 else { 
 // Display header for the course pages?>
 <i><b><a href = "index.php" target ="_top"><font color=black>Home</b></i></a> |</font>
-<i><b><a href = "inbox.php" target ="_top"><font color=black>Inbox</b></i></a> |</font>
+<i><b><a href = "inbox.php" target ="_top"><font color=black>Inbox (<?php echo $unread; ?>)</b></i></a> |</font>
 <i><b><a href = "role_list.php" target ="_top"><font color=black>Switch Access Role</b></i></a> |</font>
 <i><b><a href = "course_list.php" target ="_top"><font color=black>Switch Course</b></i></a> |</font>
 <i><b><a href = "includes/logout.php" target ="_top"><font color=black>Logout</b></i></a></font><br>

@@ -69,7 +69,7 @@ if (isset($_SESSION['message'])){
 <?php
 // Get meeting info for the user 
 $meeting_info = array();
-$data = $link->query("SELECT m.meeting_id, m.title, m.date FROM meetings m JOIN rtc55314.groups g ON g.group_id=m.group_id JOIN group_users gu ON g.group_id=gu.group_id WHERE gu.user_id=" . $_SESSION['id'] . " AND g.section_id=" . $_SESSION['section_id']);
+$data = $link->query("SELECT m.meeting_id, m.title, m.date, m.end_time FROM meetings m JOIN rtc55314.groups g ON g.group_id=m.group_id JOIN group_users gu ON g.group_id=gu.group_id WHERE gu.user_id=" . $_SESSION['id'] . " AND g.section_id=" . $_SESSION['section_id']);
 
 if($data -> num_rows>0){
     while($row = mysqli_fetch_array($data,MYSQLI_NUM)){
@@ -77,10 +77,11 @@ if($data -> num_rows>0){
         $meeting_id = $row[0];
         $title = $row[1];
         $date = $row[2];
+        $end_time = $row[3];
         // Format date to match calendar id
         $fdate = str_replace("-", "", substr($date, 0, strpos($date, ' ')));
         $time = substr($date, strpos($date, ' ')+1);
-        array_push($info, $meeting_id, $title, $fdate, $time);
+        array_push($info, $meeting_id, $title, $fdate, $time, $end_time);
         array_push($meeting_info, $info);
     }
 }
@@ -173,7 +174,7 @@ function renderCalendar(month, year) {
                         dateNum2.appendChild(hidden);
 
                         var button = document.createElement("button");
-                        button.innerHTML = meeting_info[k][1].concat(" (@", meeting_info[k][3], ")");
+                        button.innerHTML = meeting_info[k][1].concat(" (@", meeting_info[k][3], "-", meeting_info[k][4], ")");
                         button.title = "meeting";
                         button.type = "submit";
                         button.name = "submit";

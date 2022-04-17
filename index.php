@@ -49,7 +49,7 @@ $data = $link->query("SELECT * FROM notices WHERE section_id=" . $_SESSION['sect
       echo "<tr><th bgcolor='pink'>Detail</th>";
       echo "<td>" . nl2br($text) . "</td></tr>";
       if($_SESSION['role_id'] < 3){
-        echo "<tr><th bgcolor='pink'>Options</th>";
+        echo "<tr><th bgcolor='pink'>Actions</th>";
         echo "<td>";
         echo "<form class='form-button' method=post action='includes/delete_notice.php'>";
         echo "<button type='submit' name='delete' value=$notice_id onclick=\"return confirm('Are you sure you want to delete this notice?')\">Delete</button>";

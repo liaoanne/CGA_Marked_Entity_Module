@@ -9,6 +9,17 @@ if(!isset($_SERVER['HTTP_REFERER'])){
 }
 ?>
 
+<style>
+.post td:first-child{
+    width:80%;
+    vertical-align: top;
+}
+.post td:last-child{
+    width:20%;
+    vertical-align: top;
+}
+</style>
+
 <!-- Displays the coursemanager main content -->
 <div class=content>
 
@@ -83,7 +94,7 @@ if($data -> num_rows>0){
         $reply_by = $row[3] . " " . $row[4];
         $user_id = $row[5];
 
-        echo "<table><tbody><tr><th>" . $reply_by . ", Posted on: " . $date . "</th><th>Options</th></tr>";
+        echo "<table class='post'><tbody><tr><th>" . $reply_by . ", Posted on: " . $date . "</th><th>Actions</th></tr>";
         echo "<tr><td><pre>$text</pre></td>";
         echo "<td>";
         $f_text = $link->real_escape_string($text);
@@ -133,7 +144,7 @@ if($data -> num_rows>0){
 <!-- Reply textbox -->
 <form method=post action="includes/do_add_reply.php">
 <p><strong>Reply to topic:</strong><br>
-<textarea id='reply-box' name='reply' rows=8 cols=40 wrap=virtual></textarea></p>
+<textarea id='reply-box' name='reply' rows=8 cols=78 wrap=virtual></textarea></p>
 <p><button type="submit" name="submit">Reply</button></p>
 </form>
 <?php } ?>

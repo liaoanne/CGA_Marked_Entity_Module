@@ -35,8 +35,11 @@ include "includes/head.php";
 <p><strong>Set Date:</strong><font color='red'> *</font><br>
 <input type='date' name='meeting_date' required></p>
 
-<p><strong>Set Time:</strong><font color='red'> *</font><br>
+<p><strong>Set Start Time:</strong><font color='red'> *</font><br>
 <input type='time' name='meeting_time' required></p>
+
+<p><strong>Set End Time:</strong><font color='red'> *</font><br>
+<input type='time' name='end_time' required></p>
 
 <p><strong>Meeting Agenda:</strong><br>
 <textarea name="agenda" rows=8 cols=40 wrap=virtual></textarea></p>

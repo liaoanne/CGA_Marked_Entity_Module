@@ -8,13 +8,14 @@ if(!isset($_SERVER['HTTP_REFERER'])){
     exit;
 }
 
-$data = $link->query("SELECT m.title, m.agenda, m.minutes, m.date, g.name, g.group_id FROM meetings m JOIN rtc55314.groups g ON g.group_id=m.group_id WHERE m.meeting_id=" . $_SESSION['meeting_id']);
+$data = $link->query("SELECT m.title, m.agenda, m.minutes, m.date, m.end_time, g.name, g.group_id FROM meetings m JOIN rtc55314.groups g ON g.group_id=m.group_id WHERE m.meeting_id=" . $_SESSION['meeting_id']);
 if($data -> num_rows>0){
     $meeting_data = $data->fetch_assoc();
     $title = $meeting_data['title'];
     $agenda = $meeting_data['agenda'];
     $minutes = $meeting_data['minutes'];
     $date = $meeting_data['date'];
+    $end_time = $meeting_data['end_time'];
     $group_name = $meeting_data['name'];
     $group_id = $meeting_data['group_id'];
 }
@@ -46,6 +47,7 @@ if($data -> num_rows>0){
 <p></p>
 <?php if(!$readonly){ ?>
     <form class='form-button' method=post action='edit_meeting.php'>
+    <input type='hidden' name='end_time' value=<?php echo $end_time; ?>>
     <button class='button-link2' type='submit' name='edit' value='<?php echo $date; ?>'>Change Date/Time</button>
     </form>
     <p></p>
@@ -57,6 +59,7 @@ if($data -> num_rows>0){
     <p></p>
 <?php } ?>
 <?php
+// Display success/error messages
 if (isset($_SESSION['message'])){
     echo "<font color='blue'>".$_SESSION['message']."</font><br><br>";
     unset($_SESSION['message']);
@@ -65,9 +68,19 @@ if (isset($_SESSION['error'])){
     echo "<font color='red'>".$_SESSION['error']."</font><br><br>";
     unset($_SESSION['error']);
 }
+
+// Notify the user when they are in read only mode
+if($readonly){
+    echo "<font color='red'>You are in read-only mode because you left this group.</font><p></p>";
+}
 ?>
 Group Name: <font color='darkblue'><?php echo $group_name; ?></font><br>
-Meeting date and time (24-hour format): <font color='darkblue'><?php echo $date; ?></font><br>
+Meeting date and time (24-hour format): <font color='darkblue'><?php echo $date . "-" . $end_time; ?></font><br>
+<p></p></b>
+The meeting agenda and minutes can be edited at any time by any group member.<br>
+To edit, click inside the table cell. When done editing, click the ‘Save’ button below.<br>
+Groups should avoid editing the details at the same time, since edits may get overwritten.<br>
+Refresh the page to make sure you are viewing the latest updates.<br>
 <p></p>
 <table><tbody>
 <tr><th bgcolor='pink'>Agenda:</th>
@@ -75,6 +88,7 @@ Meeting date and time (24-hour format): <font color='darkblue'><?php echo $date;
 <tr><th bgcolor='pink'>Minutes:</th>
 <td id="minutes" <?php if(!$readonly){ ?>contenteditable="true" onblur="saveText2()" <?php } ?>><?php echo nl2br($minutes); ?></td></tr>
 </tbody></table>
+<button onclick="return alert('Saved')">Save</button>
 </div>
 
 <script>

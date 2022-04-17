@@ -7,11 +7,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $group_id = $link->real_escape_string(trim($_POST["group"]));
     $meeting_date = $link->real_escape_string(trim($_POST["meeting_date"]));
     $meeting_time = $link->real_escape_string(trim($_POST["meeting_time"]));
+    $end_time = $link->real_escape_string(trim($_POST["end_time"]));
     $agenda = $link->real_escape_string(trim($_POST["agenda"]));
     $datetime = $meeting_date . " " . $meeting_time;
 
     // Insert data into notices table
-    $sql = "INSERT INTO meetings (group_id, title, agenda, date) VALUES ($group_id, '$title', '$agenda', STR_TO_DATE('$datetime', '%Y-%m-%d %H:%i'))";
+    $sql = "INSERT INTO meetings (group_id, title, agenda, date, end_time) VALUES ($group_id, '$title', '$agenda', STR_TO_DATE('$datetime', '%Y-%m-%d %H:%i'), '$end_time')";
 
     // Check whether insert statement works
     try{
