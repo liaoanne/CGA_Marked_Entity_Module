@@ -5,7 +5,7 @@ include "includes/head.php";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $notice_id = $link->real_escape_string(trim($_POST["edit"]));
     $title = $link->real_escape_string(trim($_POST["title"]));
-    $text = $link->real_escape_string(trim($_POST["text"]));
+    $text = trim($_POST["text"]);
 }
 else{
     // Redirect user to welcome page

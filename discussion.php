@@ -87,6 +87,10 @@ if($data -> num_rows>0){
         echo "<tr><td><pre>$text</pre></td>";
         echo "<td>";
         $f_text = $link->real_escape_string($text);
+        $f_text = str_replace("\"", "'", $f_text);
+        if(substr_compare($f_text, 'Reply to: \n', 0, 11) == 0){
+            $f_text = substr($f_text, 14);
+        }
         // Display reply button for everyone
         if(!$readonly){
             echo "<input type='button' value='Reply' onclick=\"insertQuote('$f_text')\">";
@@ -137,8 +141,8 @@ if($data -> num_rows>0){
 <script type="text/javascript">
     function insertQuote(text){
         const textarea = document.getElementById('reply-box');
-        rt = "Reply to: \"";
-        reply_text = rt.concat(text, "\"\n------\n");
+        rt = "Reply to: \n";
+        reply_text = rt.concat(text, "\n---------------\n");
         if (!textarea.value.endsWith(reply_text)) {
             textarea.value = reply_text;
         }

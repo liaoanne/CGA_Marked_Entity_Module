@@ -11,7 +11,7 @@ if(!isset($_SERVER['HTTP_REFERER'])){
 // Get reply id
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $reply_id = $link->real_escape_string(trim($_POST["edit"]));
-    $text = $link->real_escape_string(trim($_POST["text"]));
+    $text = trim($_POST["text"]);
 }
 else{
     // Redirect user to welcome page

@@ -6,6 +6,7 @@ require "templates/Calendar.php";
 <style>
 .card th, .card td{
     width:14%;
+    vertical-align: top;
 }
 [title="today"]{
     background-color: lightpink;

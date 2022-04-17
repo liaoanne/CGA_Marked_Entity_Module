@@ -5,7 +5,20 @@ include "includes/head.php";
 <!-- Displays the coursemanager main content -->
 <div class=content>
 
-<h3>Welcome To Course Student Home Page</h3>
+<?php
+if($_SESSION['role_id'] == 1){
+  echo "<h3>Welcome To Course Admin Home Page</h3>";
+}
+elseif($_SESSION['role_id'] == 2){
+  echo "<h3>Welcome To Course Instructor Home Page</h3>";
+}
+elseif($_SESSION['role_id'] == 3){
+  echo "<h3>Welcome To Course TA Home Page</h3>";
+}
+else{
+  echo "<h3>Welcome To Course Student Home Page</h3>";
+}
+?>
 <p></p>
 <hr>
 

@@ -29,7 +29,6 @@ if($data -> num_rows>0){
         $name = $fname . " " . $lname;
         echo "<tr><td>" . $log_time . "</td><td>" . $user_id . "</td><td>" . $name . "</td><td>" . $query . "</td>";
     }
-    echo "</form></tbody></table>";
-    echo "<br>";
+    echo "</tbody></table>";
 }
 ?>

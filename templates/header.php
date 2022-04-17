@@ -31,10 +31,28 @@ document.getElementById("display_time").innerHTML=current_date;
 </script>
 
 <td align = "right">
+<?php
+// Return the number of unread mail this user has
+$data = $link->query("SELECT COUNT(*) c FROM mail_receivers WHERE receiver_id=" . $_SESSION['id'] . " AND is_read=0");
+if($data -> num_rows>0){
+    $mail_data = $data->fetch_assoc();
+    $unread = $mail_data['c'];
+}
+
+// Display header for the inbox
+if(strpos($_SERVER['REQUEST_URI'],'inbox.php') != false || strpos($_SERVER['REQUEST_URI'],'compose_mail.php') != false || strpos($_SERVER['REQUEST_URI'],'sent_box.php') != false || strpos($_SERVER['REQUEST_URI'],'mail.php') != false){ ?>
+<i><b><a href = "role_list.php" target ="_top"><font color=black>Back to Courses</b></i></a> |</font>
+<i><b><a href = "inbox.php" target ="_top"><font color=black>Inbox (<?php echo $unread; ?>)</b></i></a> |</font>
+<i><b><a href = "includes/logout.php" target ="_top"><font color=black>Logout</b></i></a></font><br>
+<?php }
+else { 
+// Display header for the course pages?>
 <i><b><a href = "index.php" target ="_top"><font color=black>Home</b></i></a> |</font>
+<i><b><a href = "inbox.php" target ="_top"><font color=black>Inbox</b></i></a> |</font>
 <i><b><a href = "role_list.php" target ="_top"><font color=black>Switch Access Role</b></i></a> |</font>
 <i><b><a href = "course_list.php" target ="_top"><font color=black>Switch Course</b></i></a> |</font>
 <i><b><a href = "includes/logout.php" target ="_top"><font color=black>Logout</b></i></a></font><br>
+<?php } ?>
 </td>
 </tr>
 </table>
